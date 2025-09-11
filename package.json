@@ -7,6 +7,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "eslint-config-prettier": "^10.1.8",
     "turbo": "^2.5.6"
   },
   "packageManager": "bun@1.2.21",
