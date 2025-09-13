@@ -3,11 +3,12 @@
   "private": true,
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "format": "turbo run format"
   },
   "dependencies": {},
   "devDependencies": {
-    "eslint-config-prettier": "^10.1.8",
     "prettier": "3.6.2",
     "turbo": "^2.5.6"
   },
