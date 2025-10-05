@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.6",
+    "@tanstack/nitro-v2-vite-plugin": "^1.132.33",
     "@tanstack/react-devtools": "^0.2.2",
     "@tanstack/react-router": "^1.130.2",
     "@tanstack/react-router-devtools": "^1.131.5",
