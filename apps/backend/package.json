@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "build": "tsup ./src/index.ts"
   },
   "dependencies": {
     "elysia": "latest"
@@ -14,7 +15,8 @@
   "devDependencies": {
     "bun-types": "latest",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4"
+    "eslint-plugin-prettier": "^5.5.4",
+    "tsup": "^8.5.0"
   },
   "module": "src/index.js"
 }
