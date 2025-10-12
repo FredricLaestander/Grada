@@ -13,9 +13,12 @@
     "@prisma/client": "6.17.1",
     "@types/bcrypt": "^6.0.0",
     "bcrypt": "^6.0.0",
-    "elysia": "latest"
+    "elysia": "latest",
+    "jsonwebtoken": "^9.0.2",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
     "bun-types": "latest",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
