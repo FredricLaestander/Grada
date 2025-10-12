@@ -42,9 +42,19 @@ export const authRouter = (app: Elysia) => {
     },
     {
       body: t.Object({
-        username: t.String(),
-        email: t.String({ pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.source }),
-        password: t.String(),
+        username: t.String({
+          pattern: /^[a-zA-Z0-9_]{3,20}$/.source,
+          error:
+            'Username must be 3-20 characters, letters/numbers/underscores only',
+        }),
+        email: t.String({
+          pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.source,
+          error: 'The provided email is not invalid.',
+        }),
+        password: t.String({
+          minLength: 6,
+          error: 'Password must be atleast 6 characters long',
+        }),
       }),
     },
   )
