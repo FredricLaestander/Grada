@@ -1,8 +1,8 @@
 import { t, type Elysia } from 'elysia'
 import { prisma } from '../../prisma/prisma'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 import { v4 as uuid } from 'uuid'
+import jwt from '@elysiajs/jwt'
 
 const usernameValidation = t.String({
   pattern: /^[a-zA-Z0-9_]{3,20}$/.source,
@@ -63,47 +63,49 @@ export const authRouter = (app: Elysia) => {
       }),
     },
   )
-  app.post(
-    '/auth/login',
-    async ({ body, status }) => {
-      try {
-        const user = await prisma.user.findFirst({
-          where: {
-            OR: [
-              { email: { equals: body.identifier } },
-              { username: { equals: body.identifier } },
-            ],
-          },
-        })
-
-        if (!user || !(await bcrypt.compare(body.password, user.password))) {
-          return status(400, 'wrong password, email or username')
-        }
-
-        const accessToken = jwt.sign(
-          {
-            userId: user.id,
-            jit: uuid(),
-          },
-          process.env.ACCESS_TOKEN_SECRET!,
-          {
-            expiresIn: '15m',
-          },
-        )
-
-        return status(200, { accessToken })
-      } catch (error) {
-        console.log('Auth login: ', error)
-        return status(500, 'Internal Server Error')
-      }
-    },
-    {
-      body: t.Object({
-        identifier: t.String(),
-        password: t.String(),
+  app
+    .use(
+      jwt({
+        name: 'jwt',
+        secret: process.env.ACCESS_TOKEN_SECRET!,
+        exp: '15m',
       }),
-    },
-  )
+    )
+    .post(
+      '/auth/login',
+      async ({ body, status, jwt }) => {
+        try {
+          const user = await prisma.user.findFirst({
+            where: {
+              OR: [
+                { email: { equals: body.identifier } },
+                { username: { equals: body.identifier } },
+              ],
+            },
+          })
+
+          if (!user || !(await bcrypt.compare(body.password, user.password))) {
+            return status(400, 'wrong password, email or username')
+          }
+
+          const accessToken = await jwt.sign({
+            userId: user.id,
+            jti: uuid(),
+          })
+
+          return status(200, { accessToken })
+        } catch (error) {
+          console.log('Auth login: ', error)
+          return status(500, 'Internal Server Error')
+        }
+      },
+      {
+        body: t.Object({
+          identifier: t.String(),
+          password: t.String(),
+        }),
+      },
+    )
 
   return app
 }
