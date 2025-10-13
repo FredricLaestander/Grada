@@ -10,11 +10,11 @@
     "build": "tsup ./src/index.ts"
   },
   "dependencies": {
+    "@elysiajs/jwt": "^1.4.0",
     "@prisma/client": "6.17.1",
     "@types/bcrypt": "^6.0.0",
     "bcrypt": "^6.0.0",
     "elysia": "latest",
-    "jsonwebtoken": "^9.0.2",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
