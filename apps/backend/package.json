@@ -7,7 +7,7 @@
     "dev": "bun run --watch src/index.ts",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "build": "tsup ./src/index.ts"
+    "build": "prisma generate && tsup ./src/index.ts"
   },
   "dependencies": {
     "@elysiajs/jwt": "^1.4.0",
