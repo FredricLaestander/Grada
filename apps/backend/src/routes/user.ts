@@ -21,12 +21,7 @@ export const userRouter = (app: Elysia) => {
     }
   })
   app.use(authPlugin).get('/users/me', async ({ currentUser, status }) => {
-    try {
-      return status(200, { currentUser })
-    } catch (error) {
-      console.log('users me', error)
-      return status(500, 'Internal Server Error')
-    }
+    return status(200, { currentUser })
   })
 
   return app
