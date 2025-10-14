@@ -1,5 +1,6 @@
 import { Elysia } from 'elysia'
 import { jwt } from '@elysiajs/jwt'
+import { prisma } from '../../prisma/prisma'
 
 export const authPlugin = (app: Elysia) => {
   return app
@@ -24,7 +25,20 @@ export const authPlugin = (app: Elysia) => {
           return status(401, 'Unauthorized')
         }
 
-        return { userId: payload.userId }
+        if (typeof payload.userId !== 'string') {
+          return status(400, 'Invalid Token')
+        }
+
+        const currentUser = await prisma.user.findUnique({
+          where: { id: payload.userId },
+          omit: { password: true },
+        })
+
+        if (!currentUser) {
+          return status(404, 'User Not Found')
+        }
+
+        return { currentUser }
       } catch (error) {
         console.log('authPlugin: ', error)
         return status(500, 'Internal Server Error')
