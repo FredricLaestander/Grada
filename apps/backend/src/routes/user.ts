@@ -1,8 +1,9 @@
 import Elysia from 'elysia'
 import { prisma } from '../../prisma/prisma'
+import { authPlugin } from '../middleware/auth'
 
 export const userRouter = (app: Elysia) => {
-  app.get('/users/:id', async ({ params, status }) => {
+  return app.use(authPlugin).get('/users/:id', async ({ params, status }) => {
     try {
       const user = await prisma.user.findUnique({
         where: { id: params.id },
@@ -19,6 +20,4 @@ export const userRouter = (app: Elysia) => {
       return status(500, 'Internal Server Error')
     }
   })
-
-  return app
 }
