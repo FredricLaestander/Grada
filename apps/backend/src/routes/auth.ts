@@ -2,7 +2,7 @@ import { t, type Elysia } from 'elysia'
 import { prisma } from '../../prisma/prisma'
 import bcrypt from 'bcrypt'
 import { v4 as uuid } from 'uuid'
-import jwt from '@elysiajs/jwt'
+import { jwt } from '@elysiajs/jwt'
 
 const usernameValidation = t.String({
   pattern: /^[a-zA-Z0-9_]{3,20}$/.source,
