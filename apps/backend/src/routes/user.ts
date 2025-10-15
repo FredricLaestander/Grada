@@ -1,9 +1,10 @@
 import Elysia from 'elysia'
 import { prisma } from '../../prisma/prisma'
 import { authPlugin } from '../middleware/auth'
+import { adminPlugin } from '../middleware/admin'
 
 export const userRouter = (app: Elysia) => {
-  app.use(authPlugin).get('/users/:id', async ({ params, status }) => {
+  app.use(adminPlugin).get('/users/:id', async ({ params, status }) => {
     try {
       const user = await prisma.user.findUnique({
         where: { id: params.id },
