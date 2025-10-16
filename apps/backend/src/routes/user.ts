@@ -1,29 +1,84 @@
-import Elysia from 'elysia'
+import Elysia, { t } from 'elysia'
 import { prisma } from '../../prisma/prisma'
 import { authPlugin } from '../middleware/auth'
 import { adminPlugin } from '../middleware/admin'
+import { emailValidation, usernameValidation } from '../validate'
 
-export const userRouter = (app: Elysia) => {
-  app.use(adminPlugin).get('/users/:id', async ({ params, status }) => {
+const auth = new Elysia()
+  .use(authPlugin)
+  .get('/users/me', async ({ currentUser, status }) => {
+    return status(200, { currentUser })
+  })
+  .patch(
+    '/users/me',
+    async ({ currentUser, body, status }) => {
+      try {
+        if (body.username) {
+          const username = await prisma.user.findUnique({
+            where: {
+              username: body.username,
+            },
+          })
+          if (username) {
+            return status(409, 'Username Taken')
+          }
+        }
+
+        if (body.email) {
+          const email = await prisma.user.findUnique({
+            where: {
+              email: body.email,
+            },
+          })
+          if (email) {
+            return status(409, 'Email Taken')
+          }
+        }
+        const updatedUser = await prisma.user.update({
+          where: { id: currentUser.id },
+          data: body,
+        })
+        return status(200, updatedUser)
+      } catch (error) {
+        console.log('users me update', error)
+        return status(500, 'Internal Server Error')
+      }
+    },
+    {
+      body: t.Object({
+        username: t.Optional(usernameValidation),
+        email: t.Optional(emailValidation),
+      }),
+    },
+  )
+  .delete('/users/me', async ({ currentUser, status }) => {
+    try {
+      await prisma.user.delete({
+        where: { id: currentUser.id },
+      })
+      return status(204, 'User Deleted')
+    } catch (error) {
+      console.log('Users me: ', error)
+      return status(500, 'Internal Server Error')
+    }
+  })
+
+const admin = new Elysia()
+  .use(adminPlugin)
+  .get('/users/:id', async ({ params, status }) => {
     try {
       const user = await prisma.user.findUnique({
         where: { id: params.id },
         omit: { password: true },
       })
-
       if (!user) {
         return status(404, 'User Not Found')
       }
-
       return status(200, { user })
     } catch (error) {
       console.log('users id', error)
       return status(500, 'Internal Server Error')
     }
   })
-  app.use(authPlugin).get('/users/me', async ({ currentUser, status }) => {
-    return status(200, { currentUser })
-  })
 
-  return app
-}
+export const userRouter = new Elysia().use(auth).use(admin)
