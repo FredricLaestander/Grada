@@ -16,7 +16,7 @@ export const authRouter = (app: Elysia) => {
           },
         })
         if (checkUsername) {
-          return status(400, 'Username already taken')
+          return status(400, 'username already taken')
         }
 
         const checkEmail = await prisma.user.findUnique({
@@ -25,7 +25,7 @@ export const authRouter = (app: Elysia) => {
           },
         })
         if (checkEmail) {
-          return status(400, 'Email already taken')
+          return status(400, 'email already taken')
         }
 
         const hashedPassword = await bcrypt.hash(body.password, 10)
@@ -37,10 +37,10 @@ export const authRouter = (app: Elysia) => {
           },
         })
 
-        return status(201, 'Created')
+        return status(201, 'created')
       } catch (error) {
-        console.log('Auth signup: ', error)
-        return status(500, 'Internal Server Error')
+        console.log('auth signup: ', error)
+        return status(500, 'something went wrong when creating user')
       }
     },
     {
@@ -49,7 +49,7 @@ export const authRouter = (app: Elysia) => {
         email: emailValidation,
         password: t.String({
           minLength: 6,
-          error: 'Password must be atleast 6 characters long',
+          error: 'password must be atleast 6 characters long',
         }),
       }),
     },
@@ -86,8 +86,8 @@ export const authRouter = (app: Elysia) => {
 
           return status(200, { accessToken })
         } catch (error) {
-          console.log('Auth login: ', error)
-          return status(500, 'Internal Server Error')
+          console.log('auth login: ', error)
+          return status(500, '')
         }
       },
       {

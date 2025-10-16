@@ -20,7 +20,7 @@ const auth = new Elysia()
             },
           })
           if (username) {
-            return status(409, 'Username Taken')
+            return status(409, 'username taken')
           }
         }
 
@@ -31,7 +31,7 @@ const auth = new Elysia()
             },
           })
           if (email) {
-            return status(409, 'Email Taken')
+            return status(409, 'email taken')
           }
         }
         const updatedUser = await prisma.user.update({
@@ -41,7 +41,7 @@ const auth = new Elysia()
         return status(200, updatedUser)
       } catch (error) {
         console.log('users me update', error)
-        return status(500, 'Internal Server Error')
+        return status(500, 'something went wrong when trying to update user')
       }
     },
     {
@@ -56,10 +56,10 @@ const auth = new Elysia()
       await prisma.user.delete({
         where: { id: currentUser.id },
       })
-      return status(204, 'User Deleted')
+      return status(200, 'user deleted')
     } catch (error) {
-      console.log('Users me: ', error)
-      return status(500, 'Internal Server Error')
+      console.log('users me: ', error)
+      return status(500, 'something went wrong when trying to delete user')
     }
   })
 
@@ -72,12 +72,12 @@ const admin = new Elysia()
         omit: { password: true },
       })
       if (!user) {
-        return status(404, 'User Not Found')
+        return status(404, 'user not found')
       }
       return status(200, { user })
     } catch (error) {
       console.log('users id', error)
-      return status(500, 'Internal Server Error')
+      return status(500, 'something went wrong when trying to get users by id')
     }
   })
 

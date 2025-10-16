@@ -13,18 +13,21 @@ export const authPlugin = new Elysia()
     try {
       const authHeader = headers.authorization
       if (!authHeader) {
-        return status(401, 'Unauthorized')
+        return status(401, 'authorization header missing')
       }
 
       const token = authHeader.split(' ')[1]
-      const payload = await jwt.verify(token)
+      if (!token) {
+        return status(401, 'bearer token not provided')
+      }
 
+      const payload = await jwt.verify(token)
       if (!payload) {
-        return status(401, 'Unauthorized')
+        return status(401, 'invalid or expired access token')
       }
 
       if (typeof payload.userId !== 'string') {
-        return status(400, 'Invalid Token')
+        return status(400, 'malformed token payload')
       }
 
       const currentUser = await prisma.user.findUnique({
@@ -33,12 +36,15 @@ export const authPlugin = new Elysia()
       })
 
       if (!currentUser) {
-        return status(404, 'User Not Found')
+        return status(404, 'user not found')
       }
 
       return { currentUser }
     } catch (error) {
       console.log('authPlugin: ', error)
-      return status(500, 'Internal Server Error')
+      return status(
+        500,
+        'something went wrong when passing through the auth middleware',
+      )
     }
   })
