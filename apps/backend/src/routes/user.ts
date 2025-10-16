@@ -4,7 +4,7 @@ import { authPlugin } from '../middleware/auth'
 import { adminPlugin } from '../middleware/admin'
 import { emailValidation, usernameValidation } from '../validate'
 
-const auth = new Elysia()
+const user = new Elysia()
   .use(authPlugin)
   .get('/users/me', async ({ currentUser, status }) => {
     return status(200, { currentUser })
@@ -81,4 +81,4 @@ const admin = new Elysia()
     }
   })
 
-export const userRouter = new Elysia().use(auth).use(admin)
+export const userRouter = new Elysia().use(user).use(admin)
