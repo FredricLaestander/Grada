@@ -1,4 +1,4 @@
-import Elysia, { t } from 'elysia'
+import { Elysia, t } from 'elysia'
 import { prisma } from '../../prisma/prisma'
 import { authPlugin } from '../middleware/auth'
 import { adminPlugin } from '../middleware/admin'
