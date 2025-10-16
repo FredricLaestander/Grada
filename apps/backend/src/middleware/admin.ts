@@ -1,4 +1,4 @@
-import Elysia from 'elysia'
+import { Elysia } from 'elysia'
 import { authPlugin } from './auth'
 
 export const adminPlugin = new Elysia()
