@@ -52,8 +52,9 @@ model Course {
 }
 
 model Lesson {
-  id   String @id @default(uuid())
-  name String
+  id    String @id @default(uuid())
+  name  String
+  order Int
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id])
