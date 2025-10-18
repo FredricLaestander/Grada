@@ -36,9 +36,10 @@ enum Role {
 }
 
 model Course {
-  id   String   @id @default(uuid())
-  name String
-  tags String[]
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  tags        String[]
 
   userId    String
   createdBy User   @relation(fields: [userId], references: [id])
