@@ -1,6 +1,7 @@
 import { Elysia } from 'elysia'
 // import { adminPlugin } from '../middleware/admin'
 import { prisma } from '../../prisma/prisma'
+import { authPlugin } from '../middleware/auth'
 
 // const courses = new Elysia().use(adminPlugin).post(
 //   '/courses',
@@ -41,4 +42,26 @@ const all = new Elysia().get('/courses', async ({ status }) => {
   }
 })
 
-export const courseRouter = new Elysia().use(all) //.use(courses)
+const user = new Elysia()
+  .use(authPlugin)
+  .get('/courses/:id', async ({ params, status }) => {
+    try {
+      const course = await prisma.course.findUnique({
+        where: { id: params.id },
+        include: { lessons: true },
+      })
+
+      if (!course) {
+        return status(404, 'course not found')
+      }
+
+      course.lessons.sort((a, b) => a.order - b.order)
+
+      return status(200, course)
+    } catch (error) {
+      console.log('courses id', error)
+      return status(500, 'something went wrong when trying to get course by id')
+    }
+  })
+
+export const courseRouter = new Elysia().use(all).use(user) //.use(courses)
