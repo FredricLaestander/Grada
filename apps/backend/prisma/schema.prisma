@@ -77,8 +77,9 @@ model Progress {
 }
 
 model Chapter {
-  id   String @id @default(uuid())
-  type Type
+  id    String @id @default(uuid())
+  order Int
+  type  Type
 
   text     TextChapter?
   question QuestionChapter?

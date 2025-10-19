@@ -64,4 +64,28 @@ const user = new Elysia()
     }
   })
 
-export const courseRouter = new Elysia().use(all).use(user) //.use(courses)
+const lesson = new Elysia()
+  .use(authPlugin)
+  .get('lessons/:id', async ({ params, status }) => {
+    try {
+      const lesson = await prisma.lesson.findUnique({
+        where: { id: params.id },
+        include: { chapters: true },
+      })
+
+      if (!lesson) {
+        return status(404, 'lesson not found')
+      }
+
+      lesson.chapters.sort((a, b) => a.order - b.order)
+
+      return status(200, lesson)
+    } catch (error) {
+      console.log('lessons id', error)
+      return status(
+        500,
+        'something went wrong when trying to get lessons by id',
+      )
+    }
+  })
+export const courseRouter = new Elysia().use(all).use(user).use(lesson) //.use(courses)
