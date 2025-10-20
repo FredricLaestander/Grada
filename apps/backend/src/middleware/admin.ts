@@ -9,7 +9,7 @@ export const adminPlugin = new Elysia()
         return status(401, 'admin header missing')
       }
     } catch (error) {
-      console.log('adminPlugin: ', error)
+      console.error('adminPlugin: ', error)
       return status(
         500,
         'something went wrong when passing through admin middleware',
