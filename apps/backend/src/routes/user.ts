@@ -40,7 +40,7 @@ const user = new Elysia()
         })
         return status(200, updatedUser)
       } catch (error) {
-        console.log('users me update', error)
+        console.error('users me update', error)
         return status(500, 'something went wrong when trying to update user')
       }
     },
@@ -58,7 +58,7 @@ const user = new Elysia()
       })
       return status(200, 'user deleted')
     } catch (error) {
-      console.log('users me: ', error)
+      console.error('users me: ', error)
       return status(500, 'something went wrong when trying to delete user')
     }
   })
@@ -76,7 +76,7 @@ const admin = new Elysia()
       }
       return status(200, { user })
     } catch (error) {
-      console.log('users id', error)
+      console.error('users id', error)
       return status(500, 'something went wrong when trying to get users by id')
     }
   })

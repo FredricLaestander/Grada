@@ -14,7 +14,7 @@ import { authPlugin } from '../middleware/auth'
 //         },
 //       })
 //     } catch (error) {
-//       console.log('course new', error)
+//       console.error('course new', error)
 //       return status(500, 'something went wrong when trying to create course')
 //     }
 //   },
@@ -37,7 +37,7 @@ const all = new Elysia().get('/courses', async ({ status }) => {
 
     return status(200, courses)
   } catch (error) {
-    console.log('courses: ', error)
+    console.error('courses: ', error)
     return status(500, 'something went wrong when trying to get all courses')
   }
 })
@@ -59,7 +59,7 @@ const user = new Elysia()
 
       return status(200, course)
     } catch (error) {
-      console.log('courses id', error)
+      console.error('courses id', error)
       return status(500, 'something went wrong when trying to get course by id')
     }
   })
@@ -81,7 +81,7 @@ const lesson = new Elysia()
 
       return status(200, lesson)
     } catch (error) {
-      console.log('lessons id', error)
+      console.error('lessons id', error)
       return status(
         500,
         'something went wrong when trying to get lessons by id',

@@ -39,7 +39,7 @@ const auth = new Elysia()
 
         return status(201, 'created')
       } catch (error) {
-        console.log('auth signup: ', error)
+        console.error('auth signup: ', error)
         return status(500, 'something went wrong when creating user')
       }
     },
@@ -85,7 +85,7 @@ const auth = new Elysia()
 
         return status(200, { accessToken })
       } catch (error) {
-        console.log('auth login: ', error)
+        console.error('auth login: ', error)
         return status(500, '')
       }
     },

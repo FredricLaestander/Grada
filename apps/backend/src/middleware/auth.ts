@@ -41,7 +41,7 @@ export const authPlugin = new Elysia()
 
       return { currentUser }
     } catch (error) {
-      console.log('authPlugin: ', error)
+      console.error('authPlugin: ', error)
       return status(
         500,
         'something went wrong when passing through the auth middleware',
