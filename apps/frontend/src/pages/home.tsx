@@ -1,12 +1,12 @@
 import { Button } from '../components/button'
-import { Logo } from '../components/logo'
+import { Header } from '../components/header'
 
 export const Home = () => {
   return (
-    <div>
-      <Logo />
-      <Button as="a" href="https://laestander.com">
-        2
+    <div className="flex gap-20">
+      <Header />
+      <Button as="a" href="/">
+        hej
       </Button>
     </div>
   )
