@@ -3,7 +3,11 @@ import { prisma } from '../../prisma/prisma'
 import bcrypt from 'bcrypt'
 import { v4 as uuid } from 'uuid'
 import { jwt } from '@elysiajs/jwt'
-import { emailValidation, usernameValidation } from '../validate'
+import {
+  emailValidation,
+  passwordValidation,
+  usernameValidation,
+} from '../validate'
 
 const auth = new Elysia()
   .post(
@@ -47,10 +51,7 @@ const auth = new Elysia()
       body: t.Object({
         username: usernameValidation,
         email: emailValidation,
-        password: t.String({
-          minLength: 6,
-          error: 'password must be atleast 6 characters long',
-        }),
+        password: passwordValidation,
       }),
     },
   )
