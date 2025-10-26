@@ -34,7 +34,7 @@ export const Input = ({
           {label}
         </label>
       </div>
-      {error && <span className="text-red text-sm">{error}</span>}
+      {error && <span className="text-grada-red h-5 text-sm">{error}</span>}
     </div>
   )
 }
