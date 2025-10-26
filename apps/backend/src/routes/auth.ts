@@ -20,7 +20,7 @@ const auth = new Elysia()
           },
         })
         if (checkUsername) {
-          return status(400, 'username already taken')
+          return status(400, { error: 'username already taken' })
         }
 
         const checkEmail = await prisma.user.findUnique({
@@ -29,7 +29,7 @@ const auth = new Elysia()
           },
         })
         if (checkEmail) {
-          return status(400, 'email already taken')
+          return status(400, { error: 'email already taken' })
         }
 
         const hashedPassword = await bcrypt.hash(body.password, 10)
@@ -41,10 +41,10 @@ const auth = new Elysia()
           },
         })
 
-        return status(201, 'created')
+        return status(201, { message: 'created' })
       } catch (error) {
         console.error('auth signup: ', error)
-        return status(500, 'something went wrong when creating user')
+        return status(500, { error: 'something went wrong when creating user' })
       }
     },
     {
