@@ -64,7 +64,7 @@ const auth = new Elysia()
   )
   .post(
     '/auth/log-in',
-    async ({ body, status, jwt }) => {
+    async ({ body, status, jwt, cookie }) => {
       try {
         const user = await prisma.user.findFirst({
           where: {
@@ -84,7 +84,13 @@ const auth = new Elysia()
           jti: uuid(),
         })
 
-        return status(200, { accessToken })
+        cookie.accessToken.value = accessToken
+        cookie.accessToken.sameSite = 'none'
+        cookie.accessToken.httpOnly = true
+        cookie.accessToken.secure = true
+        cookie.accessToken.maxAge = 15 * 60 * 1000 // 15 minutes
+
+        return status(200, { message: 'success' })
       } catch (error) {
         console.error('auth login: ', error)
         return status(500, {
