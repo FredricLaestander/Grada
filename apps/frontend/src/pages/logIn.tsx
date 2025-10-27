@@ -2,41 +2,38 @@ import { z } from 'zod'
 import { Input } from '../components/input'
 import { Button } from '../components/button'
 import { Header } from '../components/header'
-import { useState, type FormEvent } from 'react'
+import { emailSchema, usernameSchema } from '../validate'
 import { useNavigate } from 'react-router'
-import { emailSchema, passwordSchema, usernameSchema } from '../validate'
+import { useState, type FormEvent } from 'react'
 
-const signUpSchema = z
-  .object({
-    username: usernameSchema,
-    email: emailSchema,
-    password: passwordSchema,
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
-    path: ['password'],
-  })
+const identifierSchema = z
+  .string()
+  .refine(
+    (value) =>
+      usernameSchema.safeParse(value).success ||
+      emailSchema.safeParse(value).success,
+    {
+      message: 'Must be a valid username or email address',
+    },
+  )
 
-export const SignUp = () => {
+const loginSchema = z.object({
+  identifier: identifierSchema,
+  password: z.string(),
+})
+
+export const LogIn = () => {
   const navigate = useNavigate()
 
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
+  const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const [serverError, setServerError] = useState<string | null>(null)
   const [errors, setErrors] = useState<{
-    username: string | null
-    email: string | null
+    identifier: string | null
     password: string | null
-  }>({
-    username: null,
-    email: null,
-    password: null,
-  })
+  }>({ identifier: null, password: null })
+  const [serverError, setServerError] = useState<string | null>(null)
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -45,19 +42,18 @@ export const SignUp = () => {
       success,
       data: inputData,
       error,
-    } = signUpSchema.safeParse({
-      username,
-      email,
+    } = loginSchema.safeParse({
+      identifier,
       password,
-      confirmPassword,
     })
 
     if (!success) {
       const formattedErrors = z.treeifyError(error)
+
       setErrors({
-        username: formattedErrors.properties?.username?.errors[0] || null,
-        email: formattedErrors.properties?.email?.errors[0] || null,
-        password: formattedErrors.properties?.password?.errors[0] || null,
+        identifier:
+          formattedErrors?.properties?.identifier?.errors?.[0] || null,
+        password: formattedErrors?.properties?.password?.errors?.[0] || null,
       })
       return
     }
@@ -65,74 +61,58 @@ export const SignUp = () => {
     try {
       setIsLoading(true)
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/auth/sign-up`,
+        `${import.meta.env.VITE_BACKEND_URL}/auth/log-in`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(inputData),
+          credentials: 'include',
         },
       )
+
       const responseData = await response.json()
 
       if (!response.ok) {
         setServerError(responseData.error)
         return
       }
-      navigate('/auth/log-in')
+      navigate('/courses')
     } catch (error) {
       console.error(error)
-      setServerError('Something went wrong when creating the user')
+      setServerError('Something went wrong while logging in')
     } finally {
       setIsLoading(false)
     }
   }
-
   return (
     <>
       <Header />
       <div className="flex w-full max-w-sm flex-col items-center gap-6">
         <div className="flex w-full flex-col items-center gap-2">
-          <h2 className="text-4xl font-bold">
-            Welcome to <span className="text-grada-blue-300">Grada</span>!
+          <h2 className="text-center text-4xl font-bold">
+            Welcome back to <span className="text-grada-blue-300">Grada</span>!
           </h2>
           <p className="text-sm text-gray-400">
-            No need to remember a password!
+            Hope you remembered your password..
           </p>
         </div>
-        <form onSubmit={onSubmit} className="flex w-full flex-col gap-4">
+        <form
+          action="submit"
+          onSubmit={onSubmit}
+          className="flex w-full flex-col gap-4"
+        >
           <Input
-            label="Username"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-            error={errors.username}
-            id="username"
+            label="Username or email"
+            value={identifier}
+            onChange={(event) => setIdentifier(event.target.value)}
+            error={errors.identifier}
           />
-
-          <Input
-            type="email"
-            label="Email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            error={errors.email}
-            id="email"
-          />
-
           <Input
             type="password"
             label="Password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             error={errors.password}
-            id="password"
-          />
-
-          <Input
-            type="password"
-            label="Confirm password"
-            value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
-            id="confirm-password"
-            error={null}
           />
           <div className="flex w-full flex-col items-center gap-3 sm:flex-row-reverse sm:justify-between">
             <Button
@@ -141,13 +121,13 @@ export const SignUp = () => {
               isLoading={isLoading}
               classname="w-full sm:w-auto"
             >
-              Sign up
+              Log in
             </Button>
             <a
-              href="/auth/log-in"
+              href="/auth/sign-up"
               className="text-sm text-gray-400 hover:text-gray-100 hover:underline"
             >
-              Already have an account? Log in
+              Don't have an account yet? Sign up here!
             </a>
           </div>
           {serverError && (

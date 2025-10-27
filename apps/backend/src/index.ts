@@ -4,7 +4,7 @@ import { userRouter } from './routes/user'
 import { courseRouter } from './routes/course'
 import { cors } from '@elysiajs/cors'
 
-const app = new Elysia().use(cors())
+const app = new Elysia().use(cors({ credentials: true }))
 
 app.use(authRouter)
 app.use(courseRouter)
