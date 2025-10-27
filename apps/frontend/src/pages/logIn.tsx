@@ -17,13 +17,9 @@ const identifierSchema = z
     },
   )
 
-const passwordSchema = z
-  .string()
-  .min(8, 'Password must be at least 8 characters long')
-
 const loginSchema = z.object({
   identifier: identifierSchema,
-  password: passwordSchema,
+  password: z.string(),
 })
 
 export const LogIn = () => {
@@ -31,6 +27,8 @@ export const LogIn = () => {
 
   const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const [errors, setErrors] = useState<{
     identifier: string | null
     password: string | null
@@ -39,7 +37,6 @@ export const LogIn = () => {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setServerError(null)
 
     const {
       success,
@@ -62,6 +59,7 @@ export const LogIn = () => {
     }
 
     try {
+      setIsLoading(true)
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/auth/log-in`,
         {
@@ -72,9 +70,8 @@ export const LogIn = () => {
       )
 
       const responseData = await response.json()
-      console.log(response.ok, responseData)
 
-      if (response.ok) {
+      if (!response.ok) {
         setServerError(responseData.error)
         return
       }
@@ -82,9 +79,10 @@ export const LogIn = () => {
     } catch (error) {
       console.error(error)
       setServerError('Something went wrong while logging in')
+    } finally {
+      setIsLoading(false)
     }
   }
-
   return (
     <>
       <Header />
@@ -102,10 +100,26 @@ export const LogIn = () => {
           onSubmit={onSubmit}
           className="flex w-full flex-col gap-4"
         >
-          <Input label="Username or email" error={errors.identifier} />
-          <Input label="Password" error={errors.password} />
+          <Input
+            label="Username or email"
+            value={identifier}
+            onChange={(event) => setIdentifier(event.target.value)}
+            error={errors.identifier}
+          />
+          <Input
+            type="password"
+            label="Password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            error={errors.password}
+          />
           <div className="flex w-full flex-col items-center gap-3 sm:flex-row-reverse sm:justify-between">
-            <Button as="button" type="submit" classname="w-full sm:w-auto">
+            <Button
+              as="button"
+              type="submit"
+              isLoading={isLoading}
+              classname="w-full sm:w-auto"
+            >
               Log in
             </Button>
             <a
@@ -115,6 +129,9 @@ export const LogIn = () => {
               Don't have an account yet? Sign up here!
             </a>
           </div>
+          {serverError && (
+            <span className="text-grada-red text-sm">{serverError}</span>
+          )}
         </form>
       </div>
     </>

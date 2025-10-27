@@ -63,7 +63,7 @@ const auth = new Elysia()
     }),
   )
   .post(
-    '/auth/login',
+    '/auth/log-in',
     async ({ body, status, jwt }) => {
       try {
         const user = await prisma.user.findFirst({
@@ -76,7 +76,7 @@ const auth = new Elysia()
         })
 
         if (!user || !(await bcrypt.compare(body.password, user.password))) {
-          return status(400, 'wrong password, email or username')
+          return status(400, { error: 'wrong password, email or username' })
         }
 
         const accessToken = await jwt.sign({
@@ -87,7 +87,9 @@ const auth = new Elysia()
         return status(200, { accessToken })
       } catch (error) {
         console.error('auth login: ', error)
-        return status(500, '')
+        return status(500, {
+          error: 'something went wrong when trying to log in',
+        })
       }
     },
     {

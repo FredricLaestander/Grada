@@ -25,6 +25,7 @@ export const SignUp = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const [serverError, setServerError] = useState<string | null>(null)
   const [errors, setErrors] = useState<{
@@ -62,6 +63,7 @@ export const SignUp = () => {
     }
 
     try {
+      setIsLoading(true)
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/auth/sign-up`,
         {
@@ -71,7 +73,6 @@ export const SignUp = () => {
         },
       )
       const responseData = await response.json()
-      console.log(response.ok, responseData)
 
       if (!response.ok) {
         setServerError(responseData.error)
@@ -79,8 +80,10 @@ export const SignUp = () => {
       }
       navigate('/auth/log-in')
     } catch (error) {
-      console.log(error)
+      console.error(error)
       setServerError('Something went wrong when creating the user')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -132,7 +135,12 @@ export const SignUp = () => {
             error={null}
           />
           <div className="flex w-full flex-col items-center gap-3 sm:flex-row-reverse sm:justify-between">
-            <Button as="button" type="submit" classname="w-full sm:w-auto">
+            <Button
+              as="button"
+              type="submit"
+              isLoading={isLoading}
+              classname="w-full sm:w-auto"
+            >
               Sign up
             </Button>
             <a

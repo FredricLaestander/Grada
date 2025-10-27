@@ -26,8 +26,8 @@ export const Input = ({
         <label
           htmlFor={props.id}
           className={cn(
-            'pointer-events-none absolute -top-4 left-6 cursor-text text-xs text-gray-300 transition-all',
-            'peer-focus-visible:text-blue peer-focus-visible:-top-4 peer-focus-visible:left-6 peer-focus-visible:text-xs',
+            'pointer-events-none absolute -top-4 left-6 cursor-text text-xs text-gray-400 transition-all',
+            'peer-focus-visible:-top-4 peer-focus-visible:left-6 peer-focus-visible:text-xs peer-focus-visible:text-gray-100',
             'peer-placeholder-shown:top-3 peer-placeholder-shown:left-6 peer-placeholder-shown:text-base',
           )}
         >
