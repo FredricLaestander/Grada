@@ -1,8 +1,8 @@
 import { t } from 'elysia'
 
 export const usernameValidation = t.String({
-  pattern: /^[a-zA-Z0-9_]{3,20}$/.source,
-  error: 'Username must be 3-20 characters, letters/numbers/underscores only',
+  pattern: /^[a-zA-Z0-9_]{3,32}$/.source,
+  error: 'Username must be 3-32 characters, letters/numbers/underscores only',
 })
 
 export const emailValidation = t.String({
