@@ -4,19 +4,7 @@ import { Button } from '../components/button'
 import { Header } from '../components/header'
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
-
-const usernameSchema = z
-  .string()
-  .min(3, 'Username needs to be at least 3 characters')
-  .max(32, 'Username can not be long than 32 characters')
-  .regex(/^[a-zA-Z0-9_]+$/, 'Username can only include letters and numbers')
-  .trim()
-
-const emailSchema = z.email('Please enter a valid email').trim()
-
-const passwordSchema = z
-  .string()
-  .min(8, 'Password must be at least 8 characters long')
+import { emailSchema, passwordSchema, usernameSchema } from '../validate'
 
 const signUpSchema = z
   .object({
