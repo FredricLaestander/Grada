@@ -34,6 +34,20 @@ export type Course = {
   updatedAt: string
 }
 
+export type UserCourse = {
+  id: string
+  userId: string
+  courseId: string
+
+  user?: User
+  course?: Course
+
+  lessonProgress?: Progress[]
+
+  createdAt: string
+  updatedAt: string
+}
+
 export type Lesson = {
   id: string
   name: string
@@ -100,20 +114,6 @@ export type CodeChapter = {
   answers: string[]
 
   chapterId: string
-}
-
-export type UserCourse = {
-  id: string
-  userId: string
-  courseId: string
-
-  user?: User
-  course?: Course
-
-  lessonProgress?: Progress[]
-
-  createdAt: string
-  updatedAt: string
 }
 
 // Helper: Discriminated content union for a chapter with its concrete content present
