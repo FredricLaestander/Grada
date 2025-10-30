@@ -10,7 +10,10 @@ export const Header = () => {
           <Logo />
 
           <div className="hidden gap-4 sm:flex">
-            <a href="/" className="decoration-grada-blue-500 hover:underline">
+            <a
+              href="/courses"
+              className="decoration-grada-blue-500 hover:underline"
+            >
               Courses
             </a>
             <a href="/" className="decoration-grada-blue-500 hover:underline">

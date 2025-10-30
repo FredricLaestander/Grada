@@ -7,7 +7,7 @@ import { emailValidation, usernameValidation } from '../validate'
 const user = new Elysia()
   .use(authPlugin)
   .get('/users/me', async ({ currentUser, status }) => {
-    return status(200, { currentUser })
+    return status(200, currentUser)
   })
   .patch(
     '/users/me',

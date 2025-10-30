@@ -1,29 +1,22 @@
-import axios from 'axios'
 import type { Course, User } from '../types/data'
 import { backend } from './clients/backend'
 
-export const getUser = async (status) => {
+export const getUser = async () => {
   try {
     const response = await backend.get<User>('/users/me')
     return response.data
   } catch (error) {
     console.error('getUser: ', { error })
-    return status(500, {
-      error: 'something went wrong when trying to fetch ccurrent user',
-    })
+    return null
   }
 }
 
-export const getCourses = async (status) => {
+export const getCourses = async () => {
   try {
-    const response = await axios.get<Course[]>(
-      `${import.meta.env.VITE_BACKEND_URL}/courses`,
-    )
+    const response = await backend.get<Course[]>('/courses')
     return response.data
   } catch (error) {
-    console.error('getUser: ', { error })
-    return status(500, {
-      error: 'something went wrong when trying to fetch ccurrent user',
-    })
+    console.error('getCourses: ', { error })
+    return []
   }
 }
