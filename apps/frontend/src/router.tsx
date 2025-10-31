@@ -3,6 +3,7 @@ import { Home } from './pages/home'
 import { SignUp } from './pages/signUp'
 import { LogIn } from './pages/logIn'
 import { Courses } from './pages/courses'
+import { Course } from './pages/course'
 
 export const router = createBrowserRouter([
   {
@@ -20,5 +21,9 @@ export const router = createBrowserRouter([
   {
     path: '/courses',
     element: <Courses />,
+  },
+  {
+    path: '/courses/:id',
+    element: <Course />,
   },
 ])

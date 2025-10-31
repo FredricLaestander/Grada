@@ -5,17 +5,17 @@ export const CourseCard = ({
   description,
   progress = 'none',
   tags,
+  id,
 }: {
   title: string
   description: string
   progress?: 'none' | 'finished'
   tags: string[]
+  id: string
 }) => {
-  const href = ''
-
   return (
     <a
-      href={href}
+      href={`/courses/${id}`}
       className={`border-grada-blue-500 hover:border-grada-blue-300 flex min-h-32 w-full max-w-xl flex-col gap-4 rounded-2xl border-2 p-4 sm:flex-row ${progress === 'finished' ? 'bg-grada-blue-500' : 'bg-gray-800'} `}
     >
       <div className="flex w-full flex-col gap-0.5">

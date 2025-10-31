@@ -22,6 +22,7 @@ export const Courses = () => {
             title={course.name}
             description={course.description || ''}
             tags={course.tags}
+            id={course.id}
           />
         ))
       )}
