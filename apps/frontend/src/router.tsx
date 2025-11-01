@@ -4,6 +4,7 @@ import { SignUp } from './pages/signUp'
 import { LogIn } from './pages/logIn'
 import { Courses } from './pages/courses'
 import { Course } from './pages/course'
+import { ProtectedRoute } from './components/middleware/protectedRoute'
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
   },
   {
     path: '/courses/:id',
-    element: <Course />,
+    element: (
+      <ProtectedRoute>
+        <Course />
+      </ProtectedRoute>
+    ),
   },
 ])

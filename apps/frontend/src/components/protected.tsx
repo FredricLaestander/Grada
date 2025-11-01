@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { AuthProvider } from '../hooks/auth'
+import { AuthProvider } from '../hooks/useUser'
 
 export const Protected = ({ children }: { children: ReactNode }) => {
   return (

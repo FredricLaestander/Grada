@@ -27,7 +27,7 @@ export const CourseCard = ({
         <div className="size-12 rounded-full bg-transparent"></div>
         <div className="flex gap-2">
           {tags.map((tag) => (
-            <Tag>{tag}</Tag>
+            <Tag key={tag}>{tag}</Tag>
           ))}
         </div>
       </div>

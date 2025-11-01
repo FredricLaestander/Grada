@@ -5,8 +5,7 @@ export const getUser = async () => {
   try {
     const response = await backend.get<User>('/users/me')
     return response.data
-  } catch (error) {
-    console.error('getUser: ', { error })
+  } catch {
     return null
   }
 }
