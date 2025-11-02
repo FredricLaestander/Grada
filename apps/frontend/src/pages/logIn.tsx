@@ -87,7 +87,7 @@ export const LogIn = () => {
   return (
     <>
       <Header />
-      <div className="flex w-full max-w-sm flex-col items-center gap-6">
+      <div className="flex w-full max-w-sm flex-col items-center gap-6 px-4 pt-28">
         <div className="flex w-full flex-col items-center gap-2">
           <h2 className="text-center text-4xl font-bold">
             Welcome back to <span className="text-grada-blue-300">Grada</span>!

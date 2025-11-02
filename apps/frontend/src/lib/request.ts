@@ -20,12 +20,12 @@ export const getCourses = async () => {
   }
 }
 
-export const getCourseById = async () => {
+export const getCourseById = async (id: Course['id']) => {
   try {
-    const response = await backend.get<Lesson[]>('/courses/:id')
+    const response = await backend.get<Course>(`/courses/${id}`)
     return response.data
   } catch (error) {
-    console.error('getCourses: ', { error })
-    return []
+    console.error('getCourseById: ', { error })
+    return null
   }
 }

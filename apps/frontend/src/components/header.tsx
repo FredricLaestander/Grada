@@ -22,8 +22,8 @@ export const Header = () => {
           </div>
         </div>
         <div>
-          <Button as="a" href="/auth/sign-up" classname="hidden sm:flex">
-            Get started
+          <Button as="a" href="/auth/log-in" classname="hidden sm:flex">
+            Log in
           </Button>
           <button className="block sm:hidden">
             <Menu
