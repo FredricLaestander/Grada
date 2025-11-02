@@ -1,4 +1,4 @@
-import type { Course, Lesson, User } from '../types/data'
+import type { Course, User } from '../types/data'
 import { backend } from './clients/backend'
 
 export const getUser = async () => {
