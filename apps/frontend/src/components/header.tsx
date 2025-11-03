@@ -10,7 +10,10 @@ export const Header = () => {
           <Logo />
 
           <div className="hidden gap-4 sm:flex">
-            <a href="/" className="decoration-grada-blue-500 hover:underline">
+            <a
+              href="/courses"
+              className="decoration-grada-blue-500 hover:underline"
+            >
               Courses
             </a>
             <a href="/" className="decoration-grada-blue-500 hover:underline">
@@ -19,8 +22,8 @@ export const Header = () => {
           </div>
         </div>
         <div>
-          <Button as="a" href="/auth/sign-up" classname="hidden sm:flex">
-            Get started
+          <Button as="a" href="/auth/log-in" classname="hidden sm:flex">
+            Log in
           </Button>
           <button className="block sm:hidden">
             <Menu

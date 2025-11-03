@@ -9,16 +9,15 @@ export const authPlugin = new Elysia()
       secret: process.env.ACCESS_TOKEN_SECRET!,
     }),
   )
-  .derive({ as: 'global' }, async ({ jwt, headers, status }) => {
+  .derive({ as: 'global' }, async ({ jwt, status, cookie }) => {
     try {
-      const authHeader = headers.authorization
-      if (!authHeader) {
-        return status(401, 'authorization header missing')
+      const token = cookie.accessToken?.value
+      if (!token) {
+        return status(401, 'access token not provided')
       }
 
-      const token = authHeader.split(' ')[1]
-      if (!token) {
-        return status(401, 'bearer token not provided')
+      if (typeof token !== 'string') {
+        return status(400, 'malformed access token')
       }
 
       const payload = await jwt.verify(token)
