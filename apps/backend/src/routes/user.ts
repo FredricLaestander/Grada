@@ -80,5 +80,30 @@ const admin = new Elysia()
       return status(500, 'something went wrong when trying to get users by id')
     }
   })
+  .get('users/search', async ({ query, status }) => {
+    const { q } = query
+    if (!q || q.trim().length < 3) {
+      return status(400, 'search query must be at least 3 characters long')
+    }
+
+    try {
+      const users = await prisma.user.findMany({
+        where: {
+          OR: [
+            { username: { contains: q, mode: 'insensitive' } },
+            { email: { contains: q, mode: 'insensitive' } },
+            { id: { contains: q, mode: 'insensitive' } },
+          ],
+        },
+        omit: { password: true },
+        take: 20,
+      })
+
+      return status(200, { users })
+    } catch (error) {
+      console.error('users search', error)
+      return status(500, 'something went wrong when searching for users')
+    }
+  })
 
 export const userRouter = new Elysia().use(user).use(admin)
