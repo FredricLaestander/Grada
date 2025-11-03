@@ -9,7 +9,7 @@ export const Header = () => {
         <div className="flex items-center gap-8">
           <Logo />
 
-          <div className="hidden gap-4 sm:flex">
+          <nav className="hidden gap-4 sm:flex">
             <a
               href="/courses"
               className="decoration-grada-blue-500 hover:underline"
@@ -19,7 +19,7 @@ export const Header = () => {
             <a href="/" className="decoration-grada-blue-500 hover:underline">
               Practice
             </a>
-          </div>
+          </nav>
         </div>
         <div>
           <Button as="a" href="/auth/log-in" classname="hidden sm:flex">
