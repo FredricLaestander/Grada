@@ -10,7 +10,7 @@ export const LessonCard = ({
   return (
     <a
       href={`/lessons/${id}`}
-      className="border-grada-blue-500 flex min-h-20 w-full max-w-xl items-center gap-4 rounded-2xl border-2 bg-gray-800 px-4 py-3"
+      className="border-grada-blue-500 hover:border-grada-blue-300 flex min-h-20 w-full max-w-xl items-center gap-4 rounded-2xl border-2 bg-gray-800 px-4 py-3"
     >
       <h4>{title}</h4>
     </a>

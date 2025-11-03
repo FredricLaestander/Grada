@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import { CourseCard } from '../components/courseCard'
-import { Header } from '../components/header'
 import { getCourses } from '../lib/request'
 
 export const Courses = () => {
@@ -10,9 +9,7 @@ export const Courses = () => {
   })
 
   return (
-    <div className="flex flex-col gap-6 px-4 pt-28">
-      <Header />
-
+    <div className="flex w-full flex-col items-center gap-6 px-4 pt-28">
       {!data ? (
         <p>No courses available</p>
       ) : (

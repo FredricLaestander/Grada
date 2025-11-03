@@ -3,9 +3,11 @@ import { Header } from '../components/header'
 
 export const Layout = () => {
   return (
-    <div>
+    <>
       <Header />
-      <Outlet />
-    </div>
+      <main className="flex w-full justify-center">
+        <Outlet />
+      </main>
+    </>
   )
 }
