@@ -8,7 +8,7 @@ import { ProtectedRoute } from './components/middleware/protectedRoute'
 import { AdminLayout } from './layouts/adminLayout'
 import { Admin } from './pages/admin/admin'
 import { Layout } from './layouts/layout'
-import { AdminUsers } from './pages/admin/user'
+import { AdminUsers } from './pages/admin/users'
 import { CreateUser } from './pages/admin/createUser'
 
 export const router = createBrowserRouter([
