@@ -8,6 +8,8 @@ import { ProtectedRoute } from './components/middleware/protectedRoute'
 import { AdminLayout } from './layouts/adminLayout'
 import { Admin } from './pages/admin/admin'
 import { Layout } from './layouts/layout'
+import { AdminUsers } from './pages/admin/users'
+import { CreateUser } from './pages/admin/createUser'
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +50,14 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Admin />,
+      },
+      {
+        path: '/admin/users',
+        element: <AdminUsers />,
+      },
+      {
+        path: '/admin/create-user',
+        element: <CreateUser />,
       },
     ],
   },

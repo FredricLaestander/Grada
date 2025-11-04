@@ -4,13 +4,14 @@ import { cn } from '../utils/classname'
 export const Input = ({
   label,
   error,
+  className,
   ...props
 }: {
   label: string
   error: string | null
 } & InputHTMLAttributes<HTMLInputElement>) => {
   return (
-    <div className="flex flex-col gap-1">
+    <div className={cn('flex flex-col gap-1', className)}>
       <div
         className={cn(
           'has-focus-visible:border-grada-blue-200 border-grada-blue-500 relative flex w-full items-center gap-2 rounded-2xl border bg-gray-900 px-6 py-3 text-gray-100 outline-none',

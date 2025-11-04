@@ -99,7 +99,7 @@ const admin = new Elysia()
         take: 20,
       })
 
-      return status(200, { users })
+      return status(200, users)
     } catch (error) {
       console.error('users search', error)
       return status(500, 'something went wrong when searching for users')

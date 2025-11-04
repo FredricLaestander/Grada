@@ -27,7 +27,7 @@ export const LogIn = () => {
 
   const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const [errors, setErrors] = useState<{
     identifier: string | null
