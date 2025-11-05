@@ -74,7 +74,7 @@ const admin = new Elysia()
       if (!user) {
         return status(404, 'user not found')
       }
-      return status(200, { user })
+      return status(200, user)
     } catch (error) {
       console.error('users id', error)
       return status(500, 'something went wrong when trying to get users by id')

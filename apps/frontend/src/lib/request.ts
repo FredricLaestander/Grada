@@ -10,6 +10,17 @@ export const getUser = async () => {
   }
 }
 
+export const getUserById = async (id: User['id']) => {
+  try {
+    const response = await backend.get<User>(`/users/${id}`)
+    console.log(response.data)
+    return response.data
+  } catch (error) {
+    console.error('getUserById: ', { error })
+    return null
+  }
+}
+
 export const getCourses = async () => {
   try {
     const response = await backend.get<Course[]>('/courses')
