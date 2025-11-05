@@ -40,3 +40,12 @@ export const getCourseById = async (id: Course['id']) => {
     return null
   }
 }
+
+export const deleteUserById = async (id: User['id']) => {
+  try {
+    await backend.delete(`/users/${id}`)
+  } catch (error) {
+    console.error('deleteUserById: ', { error })
+    return null
+  }
+}

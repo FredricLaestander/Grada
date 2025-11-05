@@ -42,7 +42,7 @@ model Course {
   tags        String[]
 
   userId    String
-  createdBy User   @relation(fields: [userId], references: [id])
+  createdBy User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   lessons Lesson[]
   users   UserCourse[]
@@ -57,7 +57,7 @@ model Lesson {
   order Int
 
   courseId String
-  course   Course @relation(fields: [courseId], references: [id])
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   chapters Chapter[]
   progress Progress[]
@@ -71,9 +71,9 @@ model Progress {
   donePercentage Int
 
   lessonId     String
-  lesson       Lesson     @relation(fields: [lessonId], references: [id])
+  lesson       Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   userCourseId String
-  userCourse   UserCourse @relation(fields: [userCourseId], references: [id])
+  userCourse   UserCourse @relation(fields: [userCourseId], references: [id], onDelete: Cascade)
 }
 
 model Chapter {
@@ -86,7 +86,7 @@ model Chapter {
   code     CodeChapter?
 
   lessonId String
-  lesson   Lesson @relation(fields: [lessonId], references: [id])
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -103,7 +103,7 @@ model TextChapter {
   text String
 
   chapterId String  @unique
-  chapter   Chapter @relation(fields: [chapterId], references: [id])
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 }
 
 model QuestionChapter {
@@ -113,7 +113,7 @@ model QuestionChapter {
   correct      Int
 
   chapterId String  @unique
-  chapter   Chapter @relation(fields: [chapterId], references: [id])
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 }
 
 model CodeChapter {
@@ -124,7 +124,7 @@ model CodeChapter {
   answers  String[]
 
   chapterId String  @unique
-  chapter   Chapter @relation(fields: [chapterId], references: [id])
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 }
 
 model UserCourse {
@@ -132,8 +132,8 @@ model UserCourse {
   userId   String
   courseId String
 
-  user   User   @relation(fields: [userId], references: [id])
-  course Course @relation(fields: [courseId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   lessonProgress Progress[]
 
