@@ -10,6 +10,7 @@ import { Admin } from './pages/admin/admin'
 import { Layout } from './layouts/layout'
 import { AdminUsers } from './pages/admin/users'
 import { CreateUser } from './pages/admin/createUser'
+import { AdminUser } from './pages/admin/user'
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ export const router = createBrowserRouter([
       {
         path: '/admin/users',
         element: <AdminUsers />,
+      },
+      {
+        path: '/admin/users/:id',
+        element: <AdminUser />,
       },
       {
         path: '/admin/create-user',
