@@ -10,6 +10,17 @@ export const getUser = async () => {
   }
 }
 
+export const getUserById = async (id: User['id']) => {
+  try {
+    const response = await backend.get<User>(`/users/${id}`)
+    console.log(response.data)
+    return response.data
+  } catch (error) {
+    console.error('getUserById: ', { error })
+    return null
+  }
+}
+
 export const getCourses = async () => {
   try {
     const response = await backend.get<Course[]>('/courses')
@@ -26,6 +37,15 @@ export const getCourseById = async (id: Course['id']) => {
     return response.data
   } catch (error) {
     console.error('getCourseById: ', { error })
+    return null
+  }
+}
+
+export const deleteUserById = async (id: User['id']) => {
+  try {
+    await backend.delete(`/users/${id}`)
+  } catch (error) {
+    console.error('deleteUserById: ', { error })
     return null
   }
 }
