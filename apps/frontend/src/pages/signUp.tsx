@@ -25,9 +25,8 @@ export const SignUp = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const [serverError, setServerError] = useState<string | null>(null)
   const [errors, setErrors] = useState<{
     username: string | null
     email: string | null
@@ -37,6 +36,7 @@ export const SignUp = () => {
     email: null,
     password: null,
   })
+  const [serverError, setServerError] = useState<string | null>(null)
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
