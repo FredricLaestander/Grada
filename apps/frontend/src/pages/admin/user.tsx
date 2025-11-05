@@ -4,12 +4,37 @@ import { Tabs } from '../../components/admin/tabs'
 import { useState } from 'react'
 import { Overview } from '../../components/admin/overview'
 import { Edit } from '../../components/admin/edit'
+import { getUserById } from '../../lib/request'
+import { useQuery } from '@tanstack/react-query'
+import { useParams } from 'react-router'
 
 export const AdminUser = () => {
+  const { id } = useParams()
+
   const [tab, setTab] = useState<'overview' | 'edit'>('overview')
+  const { data, refetch } = useQuery({
+    queryKey: ['user'],
+    queryFn: () => getUserById(id!),
+  })
+
+  if (!data) {
+    return <p>nono user found</p>
+  }
+
   const tabMap = {
-    overview: <Overview />,
-    edit: <Edit />,
+    overview: <Overview user={data} />,
+    edit: (
+      <Edit
+        onCancel={() => {
+          setTab('overview')
+        }}
+        user={data}
+        onSuccess={() => {
+          refetch()
+          setTab('overview')
+        }}
+      />
+    ),
   }
 
   return (
