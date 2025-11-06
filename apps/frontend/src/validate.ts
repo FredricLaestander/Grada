@@ -12,3 +12,15 @@ export const emailSchema = z.email('Please enter a valid email').trim()
 export const passwordSchema = z
   .string()
   .min(8, 'Password must be at least 8 characters long')
+
+export const signUpSchema = z
+  .object({
+    username: usernameSchema,
+    email: emailSchema,
+    password: passwordSchema,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['password'],
+  })

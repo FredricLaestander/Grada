@@ -119,7 +119,7 @@ const admin = new Elysia()
         }
 
         const hashedPassword = await bcrypt.hash(body.password, 10)
-        await prisma.user.create({
+        const user = await prisma.user.create({
           data: {
             username: body.username,
             email: body.email,
@@ -128,7 +128,7 @@ const admin = new Elysia()
           },
         })
 
-        return status(201, { message: 'created' })
+        return status(201, user.id)
       } catch (error) {
         console.error('auth signup: ', error)
         return status(500, { error: 'something went wrong when creating user' })
