@@ -59,7 +59,7 @@ const auth = new Elysia()
     jwt({
       name: 'jwt',
       secret: process.env.ACCESS_TOKEN_SECRET!,
-      exp: '15d',
+      exp: '15m',
     }),
   )
   .post(
