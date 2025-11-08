@@ -14,3 +14,7 @@ export const passwordValidation = t.String({
   pattern: /^(?=.{8,})/.source,
   error: 'Password must be at least 8 characters long',
 })
+
+export const roleValidation = t.Array(
+  t.UnionEnum(['USER', 'ADMIN', 'DESIGNER']),
+)

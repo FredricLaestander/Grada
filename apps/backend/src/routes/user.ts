@@ -1,8 +1,14 @@
 import { Elysia, t, Context } from 'elysia'
 import { prisma } from '../../prisma/prisma'
+import bcrypt from 'bcrypt'
 import { authPlugin } from '../middleware/auth'
 import { adminPlugin } from '../middleware/admin'
-import { emailValidation, usernameValidation } from '../validate'
+import {
+  emailValidation,
+  passwordValidation,
+  roleValidation,
+  usernameValidation,
+} from '../validate'
 
 const update = async ({
   id,
@@ -90,6 +96,53 @@ const user = new Elysia()
 
 const admin = new Elysia()
   .use(adminPlugin)
+  .post(
+    '/users/create-user',
+    async ({ body, status }) => {
+      try {
+        const checkUsername = await prisma.user.findUnique({
+          where: {
+            username: body.username,
+          },
+        })
+        if (checkUsername) {
+          return status(400, { error: 'username already taken' })
+        }
+
+        const checkEmail = await prisma.user.findUnique({
+          where: {
+            email: body.email,
+          },
+        })
+        if (checkEmail) {
+          return status(400, { error: 'email already taken' })
+        }
+
+        const hashedPassword = await bcrypt.hash(body.password, 10)
+        const user = await prisma.user.create({
+          data: {
+            username: body.username,
+            email: body.email,
+            password: hashedPassword,
+            roles: body.roles,
+          },
+        })
+
+        return status(201, user.id)
+      } catch (error) {
+        console.error('auth signup: ', error)
+        return status(500, { error: 'something went wrong when creating user' })
+      }
+    },
+    {
+      body: t.Object({
+        username: usernameValidation,
+        email: emailValidation,
+        password: passwordValidation,
+        roles: roleValidation,
+      }),
+    },
+  )
   .get('/users/:id', async ({ params, status }) => {
     try {
       const user = await prisma.user.findUnique({
