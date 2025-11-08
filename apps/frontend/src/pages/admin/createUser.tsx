@@ -5,6 +5,7 @@ import { signUpSchema } from '../../validate'
 import { useNavigate } from 'react-router'
 import { useState, type FormEvent } from 'react'
 import { backend } from '../../lib/clients/backend'
+import { Switch } from '../../components/admin/switch'
 
 const roleSchema = z.array(z.string())
 const createSchema = signUpSchema.safeExtend({ roles: roleSchema })
@@ -16,7 +17,7 @@ export const CreateUser = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [roles, setRoles] = useState('')
+  const [isAdmin, setIsAdmin] = useState(false)
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -45,10 +46,8 @@ export const CreateUser = () => {
       email,
       password,
       confirmPassword,
-      roles,
+      roles: isAdmin ? ['USER', 'ADMIN'] : ['USER'],
     })
-
-    console.log(success, error)
 
     if (!success) {
       const formattedErrors = z.treeifyError(error)
@@ -63,8 +62,8 @@ export const CreateUser = () => {
 
     try {
       setIsLoading(true)
-      const userId = await backend.post(`/auth/sign-up`, inputData)
-      navigate(`/admin/users/${userId}`)
+      const userId = await backend.post(`/users/create-user`, inputData)
+      navigate(`/admin/users/${userId.data}`)
     } catch (error) {
       console.error(error)
       setServerError('Something went wrong when trying to create a user')
@@ -100,8 +99,9 @@ export const CreateUser = () => {
           onChange={(event) => setConfirmPassword(event.target.value)}
         />
 
-        <div className="flex flex-col gap-3 bg-white">
+        <div className="flex flex-col gap-3">
           <h4>Roles</h4>
+          <Switch id="switchAdmin" label="Admin" onToggle={setIsAdmin} />
         </div>
         {serverError && (
           <span className="text-grada-red text-sm">{serverError}</span>
