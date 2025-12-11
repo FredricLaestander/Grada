@@ -6,7 +6,7 @@ export const adminPlugin = new Elysia()
   .derive({ as: 'global' }, async ({ status, currentUser }) => {
     try {
       if (!currentUser.roles.includes('ADMIN')) {
-        return status(401, 'admin header missing')
+        return status(403, 'admin header missing')
       }
     } catch (error) {
       console.error('adminPlugin: ', error)

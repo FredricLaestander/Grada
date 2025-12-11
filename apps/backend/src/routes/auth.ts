@@ -62,9 +62,56 @@ const auth = new Elysia()
       exp: '15m',
     }),
   )
+  .use(
+    jwt({
+      name: 'refresh',
+      secret: process.env.ACCESS_TOKEN_SECRET!,
+      exp: '7d',
+    }),
+  )
+  .post(
+    '/auth/refresh-token',
+    async ({ cookie, status, jwt }) => {
+      try {
+        const refreshToken = cookie.refreshToken.value
+        if (!refreshToken) {
+          return status(401, { error: 'no refresh token' })
+        }
+
+        const validToken = await jwt.verify(refreshToken)
+        if (!validToken) {
+          return status(401, { error: 'invalid refresh token' })
+        }
+
+        const { userId } = (await jwt.verify(refreshToken)) as {
+          userId: string
+        }
+
+        const accessToken = await jwt.sign({
+          userId,
+          jti: uuid(),
+        })
+        cookie.accessToken.value = accessToken
+        cookie.accessToken.sameSite = 'none'
+        cookie.accessToken.httpOnly = true
+        cookie.accessToken.secure = true
+        cookie.accessToken.maxAge = 15 * 60 * 1000 // 15 minutes
+
+        return status(204)
+      } catch (error) {
+        console.error('auth refresh-token: ', error)
+        return status(500, {
+          error: 'something went wrong when trying to refresh-token',
+        })
+      }
+    },
+    {
+      cookie: t.Cookie({ refreshToken: t.String() }),
+    },
+  )
   .post(
     '/auth/log-in',
-    async ({ body, status, jwt, cookie }) => {
+    async ({ body, status, jwt, refresh, cookie }) => {
       try {
         const user = await prisma.user.findFirst({
           where: {
@@ -83,12 +130,21 @@ const auth = new Elysia()
           userId: user.id,
           jti: uuid(),
         })
-
         cookie.accessToken.value = accessToken
         cookie.accessToken.sameSite = 'none'
         cookie.accessToken.httpOnly = true
         cookie.accessToken.secure = true
         cookie.accessToken.maxAge = 15 * 60 * 1000 // 15 minutes
+
+        const refreshToken = await refresh.sign({
+          userId: user.id,
+          jti: uuid(),
+        })
+        cookie.refreshToken.value = refreshToken
+        cookie.refreshToken.sameSite = 'none'
+        cookie.refreshToken.httpOnly = true
+        cookie.refreshToken.secure = true
+        cookie.refreshToken.maxAge = 7 * 24 * 60 * 60 * 1000 // 7 days
 
         return status(200, { message: 'success' })
       } catch (error) {

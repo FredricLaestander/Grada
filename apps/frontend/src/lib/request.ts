@@ -1,5 +1,19 @@
+import axios from 'axios'
 import type { Course, User } from '../types/data'
 import { backend } from './clients/backend'
+
+export const refreshTokens = async () => {
+  // this needs to be it's own client to avoid an infinite loop with the interceptor
+  try {
+    await axios
+      .create({
+        baseURL: import.meta.env.VITE_BACKEND_URL,
+      })
+      .get('/auth/refresh-token')
+  } catch (error) {
+    console.error('refreshTokens: ', { error })
+  }
+}
 
 export const getUser = async () => {
   try {
