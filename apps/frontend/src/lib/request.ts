@@ -8,8 +8,9 @@ export const refreshTokens = async () => {
     await axios
       .create({
         baseURL: import.meta.env.VITE_BACKEND_URL,
+        withCredentials: true,
       })
-      .get('/auth/refresh-token')
+      .post('/auth/refresh-token')
   } catch (error) {
     console.error('refreshTokens: ', { error })
   }

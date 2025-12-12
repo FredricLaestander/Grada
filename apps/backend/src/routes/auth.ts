@@ -95,7 +95,7 @@ const auth = new Elysia()
         cookie.accessToken.sameSite = 'none'
         cookie.accessToken.httpOnly = true
         cookie.accessToken.secure = true
-        cookie.accessToken.maxAge = 15 * 60 * 1000 // 15 minutes
+        cookie.accessToken.maxAge = 60 * 15 // 15 minutes
 
         return status(204)
       } catch (error) {
@@ -134,7 +134,7 @@ const auth = new Elysia()
         cookie.accessToken.sameSite = 'none'
         cookie.accessToken.httpOnly = true
         cookie.accessToken.secure = true
-        cookie.accessToken.maxAge = 15 * 60 * 1000 // 15 minutes
+        cookie.accessToken.maxAge = 60 * 15 // 15 minutes
 
         const refreshToken = await refresh.sign({
           userId: user.id,
@@ -144,7 +144,7 @@ const auth = new Elysia()
         cookie.refreshToken.sameSite = 'none'
         cookie.refreshToken.httpOnly = true
         cookie.refreshToken.secure = true
-        cookie.refreshToken.maxAge = 7 * 24 * 60 * 60 * 1000 // 7 days
+        cookie.refreshToken.maxAge = 60 * 24 * 7 // 7 days
 
         return status(200, { message: 'success' })
       } catch (error) {
