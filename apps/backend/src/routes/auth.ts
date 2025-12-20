@@ -161,5 +161,16 @@ const auth = new Elysia()
       }),
     },
   )
+  .delete('/auth/log-out', async ({ cookie: { accessToken }, status }) => {
+    try {
+      accessToken.remove()
+      return status(200, { message: 'success' })
+    } catch (error) {
+      console.error('auth log out:', error)
+      return status(500, {
+        error: 'something went wrong when trying to log out',
+      })
+    }
+  })
 
 export const authRouter = new Elysia().use(auth)
