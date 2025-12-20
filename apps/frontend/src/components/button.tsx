@@ -4,7 +4,7 @@ import { cn } from '../utils/classname'
 
 type Base = {
   icon?: LucideIcon
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'ghost'
   children: ReactNode
   classname?: string
   isLoading?: boolean
@@ -36,7 +36,13 @@ export const Button = ({
       onClick={onClick}
       type={type}
       className={cn(
-        `relative flex cursor-pointer gap-3 rounded-full px-8 py-3 text-base font-bold whitespace-nowrap transition ${variant === 'secondary' ? 'hover:bg-grada-blue-950 bg-gray-950 text-gray-100' : 'bg-grada-blue-500 hover:bg-grada-blue-600 text-gray-950'}`,
+        `relative flex cursor-pointer gap-3 rounded-full px-8 py-3 text-base font-bold whitespace-nowrap transition`,
+        variant === 'primary' &&
+          `bg-grada-blue-500 hover:bg-grada-blue-600 text-gray-950`,
+        variant === 'secondary' &&
+          `hover:bg-grada-blue-950 bg-gray-950 text-gray-100`,
+        variant === 'ghost' &&
+          `hover:bg-grada-blue-100/10 bg-transparent px-5 py-3 text-sm font-medium text-gray-100`,
         classname,
       )}
     >
