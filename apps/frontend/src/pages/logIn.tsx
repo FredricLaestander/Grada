@@ -5,6 +5,7 @@ import { Header } from '../components/header'
 import { emailSchema, usernameSchema } from '../validate'
 import { useNavigate } from 'react-router'
 import { useState, type FormEvent } from 'react'
+import { useUser } from '../hooks/useUser'
 
 const identifierSchema = z
   .string()
@@ -24,6 +25,7 @@ const loginSchema = z.object({
 
 export const LogIn = () => {
   const navigate = useNavigate()
+  const { refetch } = useUser()
 
   const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
@@ -76,6 +78,7 @@ export const LogIn = () => {
         setServerError(responseData.error)
         return
       }
+      await refetch()
       navigate('/courses')
     } catch (error) {
       console.error(error)

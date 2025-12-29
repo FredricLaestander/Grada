@@ -1,8 +1,27 @@
 import { Menu } from 'lucide-react'
 import { Button } from './button'
 import { Logo } from './logo'
+import { useUser } from '../hooks/useUser'
+import { backend } from '../lib/clients/backend'
 
 export const Header = () => {
+  const { data: user, isPending, refetch } = useUser()
+
+  if (isPending) {
+    return // TODO: loading state
+  }
+
+  const logOut = async () => {
+    try {
+      const res = await backend.delete('/auth/log-out')
+      console.log(res)
+      await refetch()
+      console.log(user)
+    } catch (error) {
+      console.error('log out:', error)
+    }
+  }
+
   return (
     <header className="border-grada-blue-500 fixed inset-x-0 top-0 z-10 flex h-20 w-full items-center justify-center border-b-2 bg-gray-950 p-4">
       <div className="flex w-full max-w-6xl justify-between">
@@ -22,9 +41,20 @@ export const Header = () => {
           </nav>
         </div>
         <div>
-          <Button as="a" href="/auth/log-in" classname="hidden sm:flex">
-            Log in
-          </Button>
+          {user ? (
+            <Button
+              as="button"
+              onClick={logOut}
+              variant="ghost"
+              classname="hidden sm:flex"
+            >
+              Log out
+            </Button>
+          ) : (
+            <Button as="a" href="/auth/log-in" classname="hidden sm:flex">
+              Log in
+            </Button>
+          )}
           <button className="block sm:hidden">
             <Menu
               size={'2rem'}
