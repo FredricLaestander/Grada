@@ -79,7 +79,7 @@ export const LogIn = () => {
         return
       }
       await refetch()
-      navigate('/courses')
+      navigate('/')
     } catch (error) {
       console.error(error)
       setServerError('Something went wrong while logging in')

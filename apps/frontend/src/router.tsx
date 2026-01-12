@@ -11,6 +11,7 @@ import { Layout } from './layouts/layout'
 import { AdminUsers } from './pages/admin/users'
 import { CreateUser } from './pages/admin/createUser'
 import { AdminUser } from './pages/admin/user'
+import { Landing } from './pages/landing'
 
 export const router = createBrowserRouter([
   {
@@ -19,7 +20,15 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: (
+          <ProtectedRoute path="/landing">
+            <Home />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/landing',
+        element: <Landing />,
       },
       {
         path: '/auth/sign-up',

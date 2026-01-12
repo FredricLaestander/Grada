@@ -6,9 +6,11 @@ import type { Role } from '../../types/data'
 export const ProtectedRoute = ({
   children,
   role = 'USER',
+  path = '/auth/log-in',
 }: {
   children: ReactNode
   role?: Role
+  path?: string
 }) => {
   const { data: user, isPending } = useUser()
 
@@ -17,7 +19,7 @@ export const ProtectedRoute = ({
   }
 
   if (!user) {
-    return <Navigate to="/auth/log-in" />
+    return <Navigate to={path} />
   }
 
   if (role === 'ADMIN' && !user.roles.includes('ADMIN')) {
