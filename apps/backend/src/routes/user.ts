@@ -195,8 +195,8 @@ const admin = new Elysia()
       }),
     },
   )
-  .delete('/users/:id', async ({ currentUser, status }) => {
-    return deleteUser({ id: currentUser.id, status })
+  .delete('/users/:id', async ({ params, status }) => {
+    return deleteUser({ id: params.id, status })
   })
 
 export const userRouter = new Elysia().use(user).use(admin)
