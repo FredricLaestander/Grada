@@ -8,7 +8,7 @@ Grada is a gameified code learning platform where you will take things one step 
 
 ## Getting started
 
-Follow the instruction for each app ([frontend](.apps/frontend/README.md) and [backend](./apps/backend/README.md))
+Follow the instruction for each app ([frontend](apps/frontend/README.md) and [backend](apps/backend/README.md))
 
 This is a [turborepo](https://turborepo.com/) and a most tasks can efficiently be run from the root of the project. See [`turbo.json`](turbo.json) to find all tasks
 
